@@ -6,6 +6,7 @@ const productDetail = require('./ProductDetail.model.js');
 const category = require('./Category.model.js');
 const brand = require('./Brand.model.js');
 const bill = require('./Bill.model.js');
+const order = require('./Orders.model.js')
 
 const db = {};
 db.user = user;
@@ -14,6 +15,8 @@ db.productDetail = productDetail;
 db.category = category;
 db.brand = brand;
 db.bill = bill;
+db.order = order;
+
 
 db.connectDB = async () => {
   try {
