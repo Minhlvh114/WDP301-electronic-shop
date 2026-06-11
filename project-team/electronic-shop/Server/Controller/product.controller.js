@@ -1,308 +1,448 @@
-const { default: mongoose } = require('mongoose');
-const db = require('../Model/index.js');
-const Product = db.product
+const mongoose = require("mongoose");
+const Product = require("../Model/Product.model");
+const Brand = require("../Model/Brand.model");
+const Category = require("../Model/Category.model");
+const ProductDetail = require("../Model/ProductDetail.model");
 
-// Create a USER
-const addProduct = async (req, res) => {
-    try {
+const productPopulateOptions = [
+  {
+    path: "brand_id",
+    select: "name img_url",
+  },
+  {
+    path: "category_id",
+    select: "name",
+  },
+  {
+    path: "product_detail_id",
+    select: "chip memory RAM SIM screen_size color",
+  },
+];
 
-        //\\Get data from req.body
-        const body = req.body;// console.log("\x1b[32m%s\x1b[0m","USER_DATA: ", body);
+const isValidObjectId = (id) => {
+  return mongoose.Types.ObjectId.isValid(id);
+};
 
-        //\\Check req data
-        if (!body) {
-            // console.log({ERROR: 'Require user body!'})
-            return res.status(400).send({ ERROR: 'Require user data!' })
-        }
-
-          //\\Check req params
-        if (!body.category_id) {
-            // console.log("ERROR: 'Require id param!")
-            return res.status(400).send({ ERROR: 'Require category_id!' })
-        }
-
-        //\\Validate Mongo ObjectId
-        if (!mongoose.isValidObjectId(body.category_id)) {
-            return res.status(400).send({ ERROR: 'Invalidate id:', id: body.category_id });
-        }
-
-        //\\Initialize new USER + Save USER to database
-        const dataDB = await new Product(body).save();// console.log("\x1b[32m%s\x1b[0m","USER: ", dataDB);
-
-        //\\Validate data
-        //convert mongo document to a plain-old JavaScript object 
-        const data = dataDB.toObject()
-        //delete attribute
-        delete data.createdAt;
-        delete data.updatedAt;
-        delete data.__v
-
-        //\\RESPONSE
-        return res.status(201).send({ message: 'Create successfully!', data: data });
-    } catch (error) {
-        return res.status(500).send({ ERROR: error.message, data });
+const validateReferenceIds = async ({ brand_id, category_id, product_detail_id }) => {
+  if (category_id) {
+    if (!isValidObjectId(category_id)) {
+      return {
+        success: false,
+        status: 400,
+        message: "Invalid category_id",
+      };
     }
-}
 
+    const category = await Category.findById(category_id);
 
-// Read one USER by id && Include related COUNTRY && AREA
+    if (!category) {
+      return {
+        success: false,
+        status: 404,
+        message: "Category not found",
+      };
+    }
+  }
+
+  if (brand_id) {
+    if (!isValidObjectId(brand_id)) {
+      return {
+        success: false,
+        status: 400,
+        message: "Invalid brand_id",
+      };
+    }
+
+    const brand = await Brand.findById(brand_id);
+
+    if (!brand) {
+      return {
+        success: false,
+        status: 404,
+        message: "Brand not found",
+      };
+    }
+  }
+
+  if (product_detail_id) {
+    if (!isValidObjectId(product_detail_id)) {
+      return {
+        success: false,
+        status: 400,
+        message: "Invalid product_detail_id",
+      };
+    }
+
+    const productDetail = await ProductDetail.findById(product_detail_id);
+
+    if (!productDetail) {
+      return {
+        success: false,
+        status: 404,
+        message: "Product detail not found",
+      };
+    }
+  }
+
+  return {
+    success: true,
+  };
+};
+
+const createProduct = async (req, res) => {
+  try {
+    const {
+      name,
+      img_url,
+      description,
+      price,
+      brand_id,
+      category_id,
+      product_detail_id,
+    } = req.body;
+
+    if (!name || !img_url || !description || price === undefined || !category_id) {
+      return res.status(400).json({
+        success: false,
+        message: "name, img_url, description, price and category_id are required",
+      });
+    }
+
+    const referenceValidation = await validateReferenceIds({
+      brand_id,
+      category_id,
+      product_detail_id,
+    });
+
+    if (!referenceValidation.success) {
+      return res.status(referenceValidation.status).json({
+        success: false,
+        message: referenceValidation.message,
+      });
+    }
+
+    if (product_detail_id) {
+      const existedProductDetail = await Product.findOne({ product_detail_id });
+
+      if (existedProductDetail) {
+        return res.status(409).json({
+          success: false,
+          message: "This product_detail_id is already used by another product",
+        });
+      }
+    }
+
+    const productPayload = {
+      name,
+      img_url,
+      description,
+      price,
+      category_id,
+    };
+
+    if (brand_id) {
+      productPayload.brand_id = brand_id;
+    }
+
+    if (product_detail_id) {
+      productPayload.product_detail_id = product_detail_id;
+    }
+
+    const product = await Product.create(productPayload);
+
+    const populatedProduct = await Product.findById(product._id).populate(
+      productPopulateOptions
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: "Create product successfully",
+      data: populatedProduct,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to create product",
+      error: error.message,
+    });
+  }
+};
+
+const getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.find()
+      .populate(productPopulateOptions)
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      message: "Get products successfully",
+      count: products.length,
+      data: products,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to get products",
+      error: error.message,
+    });
+  }
+};
+
 const getProductById = async (req, res) => {
-    try {
+  try {
+    const { id } = req.params;
 
-        //\\Get id from req.params
-        const id = req.params.id;   // console.log("\x1b[32m%s\x1b[0m","USER_ID: ", id);
-
-        //\\Check req params
-        if (!id) {
-            // console.log("ERROR: 'Require id param!")
-            return res.status(400).send({ ERROR: 'Require ProductId!' })
-        }
-
-        //\\Validate Mongo ObjectId
-        if (!mongoose.isValidObjectId(id)) {
-            return res.status(400).send({ ERROR: 'Invalidate id:', id });
-        }
-
-        //\\Find one USER by id + relation schema COUNTRY && AREA + Validate return data.
-        // const user = await Product.find({ _id: id }).populate('country').select('-createdAt -updatedAt -__v');
-        const dataDB = await Product.findById(id)
-            .select('-createdAt -updatedAt -__v -_id')
-            .populate('product_detail_id', '-createdAt -updatedAt -__v')
-            .populate('brand_id', '-createdAt -updatedAt -__v')
-            .populate('category_id', '-createdAt -updatedAt -__v'); // console.log("\x1b[32m%s\x1b[0m", "USER:", dataDB)
-
-
-        //\\check data - this only work with findById
-        if (!dataDB) {
-            return res.status(200).send({ message: 'No information', userId: id });
-        }
-
-        //\\Validate data response        data.films = data.films.map(({ _id, ...rest }) => rest); // console.log("\x1b[32m%s\x1b[0m","RESPONSE_DATA: ", data);
-        //convert mongo document to a plain-old JavaScript object 
-        // const data = dataDB.toObject()
-        //delete attribute 
-        // data.films = data.films.map(({ _id, ...rest }) => rest); // console.log("\x1b[32m%s\x1b[0m","RESPONSE_DATA: ", data);
-
-        //\\RESPONSE
-        return res.status(200).send({ message: 'Read successfully!', data: dataDB });
-    } catch (error) {
-        return res.status(500).send({ error: error.message });
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product id",
+      });
     }
-}
 
-// Read one USER by id && Include related COUNTRY && AREA
+    const product = await Product.findById(id).populate(productPopulateOptions);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Get product detail successfully",
+      data: product,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to get product detail",
+      error: error.message,
+    });
+  }
+};
+
 const getProductByCategory = async (req, res) => {
-    try {
+  try {
+    const { id } = req.params;
 
-        //\\Get id from req.params
-        const id = req.params.id;   // console.log("\x1b[32m%s\x1b[0m","USER_ID: ", id);
-
-        //\\Check req params
-        if (!id) {
-            // console.log("ERROR: 'Require id param!")
-            return res.status(400).send({ ERROR: 'Require ProductId!' })
-        }
-
-        //\\Validate Mongo ObjectId
-        if (!mongoose.isValidObjectId(id)) {
-            return res.status(400).send({ ERROR: 'Invalidate id:', id: id });
-        }
-
-        //\\Find one USER by id + relation schema COUNTRY && AREA + Validate return data.
-        // const user = await Product.find({ _id: id }).populate('country').select('-createdAt -updatedAt -__v');
-        const dataDB = await Product.find({ category_id: id})
-            .select('-createdAt -updatedAt -__v ')
-            .populate('product_detail_id', '-createdAt -updatedAt -__v')
-            .populate('brand_id', '-createdAt -updatedAt -__v')
-            .populate('category_id', '-createdAt -updatedAt -__v'); // console.log("\x1b[32m%s\x1b[0m", "USER:", dataDB)
-
-
-        //\\check data - this only work with findById
-        if (!dataDB) {
-            return res.status(200).send({ message: 'No information', userId: id });
-        }
-
-        //\\Validate data response
-        //convert mongo document to a plain-old JavaScript object 
-        // const data = dataDB.toObject()
-        //delete attribute 
-        // data.films = data.films.map(({ _id, ...rest }) => rest); // console.log("\x1b[32m%s\x1b[0m","RESPONSE_DATA: ", data);
-
-        //\\RESPONSE
-        return res.status(200).send({ message: 'Read successfully!', data: dataDB });
-    } catch (error) {
-        return res.status(500).send({ error: error.message });
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid category id",
+      });
     }
-}
 
+    const category = await Category.findById(id);
+
+    if (!category) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found",
+      });
+    }
+
+    const products = await Product.find({ category_id: id })
+      .populate(productPopulateOptions)
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      message: "Get products by category successfully",
+      count: products.length,
+      data: products,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to get products by category",
+      error: error.message,
+    });
+  }
+};
 
 const getProductByBrand = async (req, res) => {
-    try {
+  try {
+    const { id } = req.params;
 
-        //\\Get id from req.params
-        const id = req.params.id;    console.log("\x1b[32m%s\x1b[0m","USER_ID: ", id);
-
-        //\\Check req params
-        if (!id) {
-            // console.log("ERROR: 'Require id param!")
-            return res.status(400).send({ ERROR: 'Require ProductId!' })
-        }
-
-        //\\Validate Mongo ObjectId
-        if (!mongoose.isValidObjectId(id)) {
-            return res.status(400).send({ ERROR: 'Invalidate id:', id });
-        }
-
-        //\\Find one USER by id + relation schema COUNTRY && AREA + Validate return data.
-        // const user = await Product.find({ _id: id }).populate('country').select('-createdAt -updatedAt -__v');
-        const dataDB = await Product.find({ brand_id: id})
-            .select('-createdAt -updatedAt -__v ')
-            .populate('product_detail_id', '-createdAt -updatedAt -__v')
-            .populate('brand_id', '-createdAt -updatedAt -__v')
-            .populate('category_id', '-createdAt -updatedAt -__v'); // console.log("\x1b[32m%s\x1b[0m", "USER:", dataDB)
-
-
-        //\\check data - this only work with findById
-        if (!dataDB) {
-            return res.status(200).send({ message: 'No information', userId: id });
-        }
-
-        //\\Validate data response
-        //convert mongo document to a plain-old JavaScript object 
-    
-        //\\RESPONSE
-        return res.status(200).send({ message: 'Read successfully!', data: dataDB });
-    } catch (error) {
-        return res.status(500).send({ error: error.message });
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid brand id",
+      });
     }
-}
 
-const getAllProduct = async (req, res) => {
-     try {
+    const brand = await Brand.findById(id);
 
-        //\\Find one USER by id + relation schema COUNTRY && AREA + Validate return data.
-        // const user = await Product.find({ _id: id }).populate('country').select('-createdAt -updatedAt -__v');
-        const dataDB = await Product.find()
-            .select('-createdAt -updatedAt -__v')
-            .populate('product_detail_id', '-createdAt -updatedAt -__v')
-            .populate('brand_id', '-createdAt -updatedAt -__v')
-            .populate('category_id', '-createdAt -updatedAt -__v'); // console.log("\x1b[32m%s\x1b[0m", "USER:", dataDB)
-
-
-        //\\check data - this only work with findById
-        if (!dataDB) {
-            return res.status(200).send({ message: 'No information', userId: id });
-        }
-
-        //\\RESPONSE
-        return res.status(200).send({ message: 'Read successfully!', data: dataDB });
-    } catch (error) {
-        return res.status(500).send({ error: error.message });
+    if (!brand) {
+      return res.status(404).json({
+        success: false,
+        message: "Brand not found",
+      });
     }
-}
 
-// Update one USER by id.
+    const products = await Product.find({ brand_id: id })
+      .populate(productPopulateOptions)
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      message: "Get products by brand successfully",
+      count: products.length,
+      data: products,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to get products by brand",
+      error: error.message,
+    });
+  }
+};
+
 const updateProductById = async (req, res) => {
-    try {
-        //\\Get id from req.params and data from req.body
-        const id = req.params.id; // console.log("\x1b[32m%s\x1b[0m","USER_ID: ", id);
-        const body = req.body; // console.log("\x1b[32m%s\x1b[0m","USER_DATA: ", body);
+  try {
+    const { id } = req.params;
 
-        //\\Check req params
-        if (!id) {
-            // console.log("ERROR: 'Require id param!")
-            return res.status(400).send({ ERROR: 'Require ProductId!' })
-        }
-
-        //\\Validate MongoDB ObjectId
-        if (!mongoose.isValidObjectId(id)) {
-            return res.status(400).send({ message: 'Invalidate id:', id });
-        }
-
-        //\\Check req data
-        if (!body) {
-            // console.log({ERROR: 'Require user body!'})
-            return res.status(400).send({ ERROR: 'Require user data!' })
-        }
-
-
-        //\\Find USER by id + update with new data
-        // const updatedProduct = await Product.findByIdAndUpdate(id, data, { returnDocument: "after" });
-        const dataDB = await Product.findOneAndUpdate(
-            { _id: id },
-            body,
-            { returnDocument: "after" }
-        ).select('-createdAt -updatedAt -__v -_id'); // console.log("\x1b[32m%s\x1b[0m","USER: ",dataDB)
-
-        //\\CHECK USER - this only work with findById
-        if (!dataDB) {
-            return res.status(200).send({ message: 'No information', productId: id });
-        }
-
-        //\\RESPONSE
-        return res.send({ message: 'Update successfully!', data: dataDB });
-    } catch (error) {
-        return res.send({ error: error.message });
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product id",
+      });
     }
-}
 
+    const product = await Product.findById(id);
 
-// Delete one USER by id.
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    const {
+      name,
+      img_url,
+      description,
+      price,
+      brand_id,
+      category_id,
+      product_detail_id,
+    } = req.body;
+
+    const referenceValidation = await validateReferenceIds({
+      brand_id,
+      category_id,
+      product_detail_id:
+        product_detail_id === "" || product_detail_id === null
+          ? undefined
+          : product_detail_id,
+    });
+
+    if (!referenceValidation.success) {
+      return res.status(referenceValidation.status).json({
+        success: false,
+        message: referenceValidation.message,
+      });
+    }
+
+    if (product_detail_id) {
+      const existedProductDetail = await Product.findOne({
+        product_detail_id,
+        _id: { $ne: id },
+      });
+
+      if (existedProductDetail) {
+        return res.status(409).json({
+          success: false,
+          message: "This product_detail_id is already used by another product",
+        });
+      }
+    }
+
+    const updateData = {};
+
+    if (name !== undefined) updateData.name = name;
+    if (img_url !== undefined) updateData.img_url = img_url;
+    if (description !== undefined) updateData.description = description;
+    if (price !== undefined) updateData.price = price;
+    if (brand_id !== undefined) updateData.brand_id = brand_id;
+    if (category_id !== undefined) updateData.category_id = category_id;
+
+    if (product_detail_id !== undefined && product_detail_id !== null && product_detail_id !== "") {
+      updateData.product_detail_id = product_detail_id;
+    }
+
+    const updateQuery = {
+      $set: updateData,
+    };
+
+    if (product_detail_id === null || product_detail_id === "") {
+      updateQuery.$unset = {
+        product_detail_id: "",
+      };
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(id, updateQuery, {
+      new: true,
+      runValidators: true,
+    }).populate(productPopulateOptions);
+
+    return res.status(200).json({
+      success: true,
+      message: "Update product successfully",
+      data: updatedProduct,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update product",
+      error: error.message,
+    });
+  }
+};
+
 const deleteProductById = async (req, res) => {
-    try {
+  try {
+    const { id } = req.params;
 
-        //\\Get id from req.params
-        const id = req.params.id;   // console.log("\x1b[32m%s\x1b[0m","USER_ID: ", id);
-
-        //\\Check req params
-        if (!id) {
-            // console.log("ERROR: 'Require id param!")
-            return res.status(400).send({ ERROR: 'Require ProductId!' })
-        }
-
-        //\\Validate MongoDB ObjectId
-        if (!mongoose.isValidObjectId(id)) {
-            return res.status(400).send({ message: 'Invalidate id:', id });
-        }
-
-        //\\Find and delete USER
-        const dataDB = await Product.findByIdAndDelete(id)
-            .select('-createdAt -updatedAt -__v -_id'); // console.log("\x1b[32m%s\x1b[0m","USER: ",dataDB)
-
-        //\\CHECK USER - this only work with findById
-        if (!dataDB) {
-            return res.status(200).send({ message: 'No information', countryId: id });
-        }
-
-        //\\Validate data response
-        //convert mongo document to a plain-old JavaScript object to delete
-        const data = dataDB.toObject()  // console.log("\x1b[32m%s\x1b[0m","RESPONSE_DATA: ", data);
-        //delete attribute
-
-        //\\RESPONSE
-        return res.send({ message: 'Delete successfully!', data: data });
-    } catch (error) {
-        return res.send({ error: error.message });
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product id",
+      });
     }
-}
 
+    const deletedProduct = await Product.findByIdAndDelete(id);
 
+    if (!deletedProduct) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
 
+    return res.status(200).json({
+      success: true,
+      message: "Delete product successfully",
+      data: deletedProduct,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete product",
+      error: error.message,
+    });
+  }
+};
 
-
-
-
-// Export all CRUD handlers so route files can attach them to Express endpoints.
-const crudController = {
-
-    addProduct,
-    getProductById,
-    getProductByCategory,
-    getProductByBrand,
-    getAllProduct,
-    updateProductById,
-    deleteProductById,
-    
-}
-
-module.exports = crudController
+module.exports = {
+  createProduct,
+  getAllProducts,
+  getProductById,
+  getProductByCategory,
+  getProductByBrand,
+  updateProductById,
+  deleteProductById,
+};
