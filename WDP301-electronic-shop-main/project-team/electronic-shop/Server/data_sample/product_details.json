@@ -1,0 +1,70 @@
+[
+  {
+    "_id": {
+      "$oid": "669000000000000000000001"
+    },
+    "chip": "Apple A16 Bionic",
+    "memory": "128GB",
+    "RAM": "6GB",
+    "SIM": "Nano SIM + eSIM",
+    "screen_size": "6.1 inch",
+    "color": "Black",
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "669000000000000000000002"
+    },
+    "chip": "Apple M2",
+    "memory": "256GB SSD",
+    "RAM": "8GB",
+    "SIM": "No SIM",
+    "screen_size": "13.6 inch",
+    "color": "Silver",
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "669000000000000000000003"
+    },
+    "chip": "Intel Core i5-1235U",
+    "memory": "512GB SSD",
+    "RAM": "8GB",
+    "SIM": "No SIM",
+    "screen_size": "14 inch",
+    "color": "Gray",
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "669000000000000000000004"
+    },
+    "chip": "Snapdragon 8 Gen 3",
+    "memory": "256GB",
+    "RAM": "8GB",
+    "SIM": "Nano SIM + eSIM",
+    "screen_size": "6.2 inch",
+    "color": "Black",
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  }
+]

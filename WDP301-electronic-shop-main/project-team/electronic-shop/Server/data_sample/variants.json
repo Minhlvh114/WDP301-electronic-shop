@@ -1,0 +1,137 @@
+[
+  {
+    "_id": {
+      "$oid": "66b000000000000000000001"
+    },
+    "productId": {
+      "$oid": "66a000000000000000000001"
+    },
+    "sku": "IPHONE15-128-BLACK",
+    "attributes": {
+      "color": "Black",
+      "storage": "128GB",
+      "ram": "6GB"
+    },
+    "price": 19990000,
+    "salePrice": 18990000,
+    "stockQuantity": 20,
+    "images": [
+      "https://example.com/iphone-15-black-1.jpg"
+    ],
+    "status": "active",
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "66b000000000000000000002"
+    },
+    "productId": {
+      "$oid": "66a000000000000000000001"
+    },
+    "sku": "IPHONE15-256-BLUE",
+    "attributes": {
+      "color": "Blue",
+      "storage": "256GB",
+      "ram": "6GB"
+    },
+    "price": 22990000,
+    "salePrice": 21990000,
+    "stockQuantity": 10,
+    "images": [
+      "https://example.com/iphone-15-blue-1.jpg"
+    ],
+    "status": "active",
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "66b000000000000000000003"
+    },
+    "productId": {
+      "$oid": "66a000000000000000000002"
+    },
+    "sku": "MACBOOKAIR-M2-8-256-SILVER",
+    "attributes": {
+      "color": "Silver",
+      "storage": "256GB",
+      "ram": "8GB"
+    },
+    "price": 24990000,
+    "salePrice": 23990000,
+    "stockQuantity": 8,
+    "images": [
+      "https://example.com/macbook-air-m2-silver.jpg"
+    ],
+    "status": "active",
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "66b000000000000000000004"
+    },
+    "productId": {
+      "$oid": "66a000000000000000000003"
+    },
+    "sku": "DELL-INSPIRON14-8-512-GRAY",
+    "attributes": {
+      "color": "Gray",
+      "storage": "512GB",
+      "ram": "8GB"
+    },
+    "price": 15990000,
+    "salePrice": 14990000,
+    "stockQuantity": 12,
+    "images": [
+      "https://example.com/dell-inspiron-14-gray.jpg"
+    ],
+    "status": "active",
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "66b000000000000000000005"
+    },
+    "productId": {
+      "$oid": "66a000000000000000000004"
+    },
+    "sku": "SAMSUNG-S24-8-256-BLACK",
+    "attributes": {
+      "color": "Black",
+      "storage": "256GB",
+      "ram": "8GB"
+    },
+    "price": 21990000,
+    "salePrice": 20990000,
+    "stockQuantity": 15,
+    "images": [
+      "https://example.com/galaxy-s24-black.jpg"
+    ],
+    "status": "active",
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  }
+]

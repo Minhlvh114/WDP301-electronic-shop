@@ -1,0 +1,80 @@
+[
+  {
+    "_id": {
+      "$oid": "666000000000000000000001"
+    },
+    "name": "Admin Demo",
+    "email": "admin@gmail.com",
+    "passwordHash": "hashed_password_demo_only",
+    "phone": "0900000001",
+    "avatarUrl": "",
+    "roleId": {
+      "$oid": "665000000000000000000001"
+    },
+    "status": "active",
+    "addresses": [],
+    "emailVerified": true,
+    "verificationCode": null,
+    "verificationCodeExpires": null,
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "666000000000000000000002"
+    },
+    "name": "Customer Demo",
+    "email": "customer@gmail.com",
+    "passwordHash": "hashed_password_demo_only",
+    "phone": "0900000002",
+    "avatarUrl": "",
+    "roleId": {
+      "$oid": "665000000000000000000002"
+    },
+    "status": "active",
+    "addresses": [
+      {
+        "fullName": "Customer Demo",
+        "phone": "0900000002",
+        "address": "Ha Noi"
+      }
+    ],
+    "emailVerified": true,
+    "verificationCode": null,
+    "verificationCodeExpires": null,
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "666000000000000000000003"
+    },
+    "name": "Staff Demo",
+    "email": "staff@gmail.com",
+    "passwordHash": "hashed_password_demo_only",
+    "phone": "0900000003",
+    "avatarUrl": "",
+    "roleId": {
+      "$oid": "665000000000000000000003"
+    },
+    "status": "active",
+    "addresses": [],
+    "emailVerified": true,
+    "verificationCode": null,
+    "verificationCodeExpires": null,
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  }
+]

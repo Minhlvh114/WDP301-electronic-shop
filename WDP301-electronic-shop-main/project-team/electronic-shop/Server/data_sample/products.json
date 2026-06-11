@@ -1,0 +1,98 @@
+[
+  {
+    "_id": {
+      "$oid": "66a000000000000000000001"
+    },
+    "name": "iPhone 15",
+    "img_url": "https://example.com/iphone-15.jpg",
+    "description": "Apple iPhone 15 chính hãng.",
+    "price": 19990000,
+    "product_detail_id": {
+      "$oid": "669000000000000000000001"
+    },
+    "brand_id": {
+      "$oid": "668000000000000000000001"
+    },
+    "category_id": {
+      "$oid": "667000000000000000000002"
+    },
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "66a000000000000000000002"
+    },
+    "name": "MacBook Air M2",
+    "img_url": "https://example.com/macbook-air-m2.jpg",
+    "description": "MacBook Air M2 13 inch.",
+    "price": 24990000,
+    "product_detail_id": {
+      "$oid": "669000000000000000000002"
+    },
+    "brand_id": {
+      "$oid": "668000000000000000000001"
+    },
+    "category_id": {
+      "$oid": "667000000000000000000001"
+    },
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "66a000000000000000000003"
+    },
+    "name": "Dell Inspiron 14",
+    "img_url": "https://example.com/dell-inspiron-14.jpg",
+    "description": "Laptop Dell Inspiron 14 văn phòng.",
+    "price": 15990000,
+    "product_detail_id": {
+      "$oid": "669000000000000000000003"
+    },
+    "brand_id": {
+      "$oid": "668000000000000000000003"
+    },
+    "category_id": {
+      "$oid": "667000000000000000000001"
+    },
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "66a000000000000000000004"
+    },
+    "name": "Samsung Galaxy S24",
+    "img_url": "https://example.com/galaxy-s24.jpg",
+    "description": "Samsung Galaxy S24 chính hãng.",
+    "price": 21990000,
+    "product_detail_id": {
+      "$oid": "669000000000000000000004"
+    },
+    "brand_id": {
+      "$oid": "668000000000000000000002"
+    },
+    "category_id": {
+      "$oid": "667000000000000000000002"
+    },
+    "createdAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-07T00:00:00.000Z"
+    }
+  }
+]
