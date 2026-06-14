@@ -27,7 +27,7 @@ const LoginPage = () => {
             <p className="text-small mb-4"><Link to="/forgot-password" style={{ color: 'var(--blue)' }}>Forgot password?</Link></p>
             <Link to="/profile" className="btn btn-primary btn-block">Sign in</Link>
             <p className="text-center text-small text-muted mt-4">Chưa có tài khoản? <Link to="/register" style={{ color: 'var(--blue)' }}>Đăng ký</Link></p>
-            <p className="text-center text-small mt-4"><Link to="/admin" className="text-muted">Admin login →</Link></p>
+            {/* <p className="text-center text-small mt-4"><Link to="/admin" className="text-muted">Admin login →</Link></p> */}
           </form>
         </div>
       </main>

@@ -5,6 +5,8 @@ import './../../css/pages.css'
 import HeaderLayout from '../../layout/header.layout'
 import FooterLayout from '../../layout/footer.layout'
 import { PRODUCTS } from './../../js/products-data'
+import { useCallback} from 'react'
+import axios from axios
 
 const formatPrice = (price) => '$' + price.toLocaleString()
 
@@ -13,6 +15,17 @@ const HomePage = () => {
   const laptops = PRODUCTS.filter((product) => product.category === 'Laptops')
     //tra ve cac san pham co category la smartphone
   const phones = PRODUCTS.filter((product) => product.category === 'Smartphones')
+
+  const getAllProduct = useCallback(() => {
+    axios.get('http://localhost:8080/product')
+    .then((response) =>{
+      console.log(response.data)
+
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  })
 
   const renderProductCard = (product) => (
     <article className="product-card" key={(product.id)}>
