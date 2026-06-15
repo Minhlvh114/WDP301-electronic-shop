@@ -1,7 +1,10 @@
 
 import { PRODUCTS } from './../../../js/products-data'
+import ProductRow from './product-row'
 
 const ManagerProduct = ({ panelClass }) => {
+
+  const listProduct = []
   return (
     <section id="panel-products" className={panelClass('panel-products')}>
       <div className="page-intro"><h1>Quản lý Product</h1><p className="use-case-list">Add · Get all · Get by ID · Update · Delete</p></div>
@@ -33,6 +36,14 @@ const ManagerProduct = ({ panelClass }) => {
                 </tr>
               )
             })}
+            {listProduct = PRODUCTS.map((product) => {
+              console.log(product.id)
+              return (
+                <ProductRow product={product} />
+              )
+            })}
+            {console.log(listProduct)}
+
           </tbody>
         </table>
       </div>

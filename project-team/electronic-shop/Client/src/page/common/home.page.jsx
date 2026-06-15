@@ -6,7 +6,7 @@ import HeaderLayout from '../../layout/header.layout'
 import FooterLayout from '../../layout/footer.layout'
 import { PRODUCTS } from './../../js/products-data'
 import { useCallback} from 'react'
-import axios from axios
+import {default as axios} from axios
 
 const formatPrice = (price) => '$' + price.toLocaleString()
 
@@ -25,6 +25,8 @@ const HomePage = () => {
     .catch((error) => {
       console.log(error)
     })
+
+    // const getAll = async axios.get("http://localhost:8080/:id")
   })
 
   const renderProductCard = (product) => (
