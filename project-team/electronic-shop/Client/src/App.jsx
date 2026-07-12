@@ -11,75 +11,33 @@ import CheckoutPage from './page/payment/checkout.page.jsx'
 import ProductDetailPage from './page/product/product-detail.page.jsx'
 import ProductPage from './page/product/product.page.jsx'
 
-// import React from 'react'
-// import Layout from './layout/Layout.jsx';
-// import { Blank, Dashboard, Password, Profile } from './screens/common/index.js';
-// import { UserManager } from './screens/user/index.js';
-// import { SubjectManager } from './screens/subject/index.js';
-// import { ProjectDetail, ProjectList, ProjectModify } from './screens/project/index.js';
-// import { AssignmentList, NewAssignment } from './screens/assignment/index.js';
-// import {
-//   NewSystemSetting,
-//   SystemSettingDetail,
-//   SystemSettingEdit,
-//   SystemSettingManager,
-// } from './screens/system-setting/index.js';
-// import Auth from './screens/common/Auth.jsx';
-// import { ClassManager } from './screens/class/index.js';
-// import ProtectedRouteCommon from './security/ProtectedRouteCommon.jsx';
-// import ProtectedRouteAdmin from './security/ProtectedRouteAdmin.jsx';
-// import ProtectedRouteSubjectManager from './security/ProtectedRouteSubjectManager.jsx';
+import AuthGuest from './auth/auth-guest.js'
+import AuthAdmin from './auth/auth-admin.js'
+
+
 
 function App() {
+
+
+  
   return (
     <BrowserRouter>
-      {/* <Routes>
-          <Route path={'/'} element={<ProjectModify />} />
-
-        <Route path='/' element={
-          <ProtectedRouteCommon>
-            <Layout />
-          </ProtectedRouteCommon>
-        }>
-          <Route index element={<Dashboard />} />
-          <Route element={<ProtectedRouteAdmin />}>
-            <Route path={'/user-manager'} element={<UserManager />} />
-            <Route path={'/subject-manager'} element={<SubjectManager />} />
-            <Route path={'/setting-manager'} element={<SystemSettingManager />} />
-            <Route path={'/setting-detail/:id'} element={<SystemSettingDetail />} />
-            <Route path={'/setting-edit/:id'} element={<SystemSettingEdit />} />
-          </Route>
-
-          <Route path={'/class-manager'} element={<ClassManager />} />
-          <Route path={ '/class-detail' } element={ <ClassDetail/> }/>
-
-          <Route path={'/project-modify'} element={<ProjectModify />} />
-          <Route path={'/project-detail/:id'} element={<ProjectDetail />} />
-          <Route path={'/project'} element={<ProjectList />} />
-          <Route path={'/profile'} element={<Profile />} />
-
-          <Route path={'/assignments'} element={<AssignmentList />} />
-          <Route path={'/new-assignment'} element={<NewAssignment />} />
-
-          <Route path={'/blank'} element={<Blank />} />
-
-          <Route path={'/new-setting'} element={<NewSystemSetting />} />
-
-        </Route>
-        <Route path='auth' element={<Auth />} />
-        <Route path='auth/:id/:token' element={<Password />} />
-      </Routes> */}
       <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/product' element={<ProductPage />} />
-        <Route path='/product-detail' element={<ProductDetailPage />} />
-        <Route path='/cart' element={<CartPage />} />
-        <Route path='/checkout' element={<CheckoutPage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/register' element={<RegisterPage />} />
-        <Route path='/forgot-password' element={<ForgotPasswordPage />} />
-        <Route path='/profile' element={<ProfilePage />} />
-        <Route path='/admin' element={<AdminPage />} />
+        {/* <AuthGuest>
+          <Routes>
+            <Route path ='/' element={<HomePage />}/></Route>
+          </Routes>
+        </AuthGuest> */}
+        <Route path='/' element={<AuthGuest><HomePage /></AuthGuest>} />
+        <Route path='/product' element={<AuthGuest><ProductPage /></AuthGuest>} />
+        <Route path='/product-detail' element={<AuthGuest><ProductDetailPage /></AuthGuest>} />
+        <Route path='/cart' element={<AuthGuest><CartPage /></AuthGuest>} />
+        <Route path='/checkout' element={<AuthGuest><CheckoutPage /></AuthGuest>} />
+        <Route path='/login' element={<AuthGuest><LoginPage /></AuthGuest>} />
+        <Route path='/register' element={<AuthGuest><RegisterPage /></AuthGuest>} />
+        <Route path='/forgot-password' element={<AuthGuest><ForgotPasswordPage /></AuthGuest>} />
+        <Route path='/profile' element={<AuthGuest><ProfilePage /></AuthGuest>} />
+        <Route path='/admin' element={<AuthAdmin><AdminPage /></AuthAdmin>} />
       </Routes>
     </BrowserRouter>
   )
