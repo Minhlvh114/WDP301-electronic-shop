@@ -25,14 +25,20 @@ If you are developing a production application, we recommend using TypeScript wi
 
 Page
 
+In old code vibe: coder usually use window.element. (it make params global it mean this params can use on brower console) NOTE: this relate to user when u put user to window
 
+auth file - authen user file: is file working with user
 
+export default: export nhung function bo vao default
 
+dependences: is all dependence library download on your software
 
+blue word is object
 
-
+write librian  from big package and if project user one small package  from big package will dowload from internet small package not download all from big package
 
 dat ten file co duoi ten thu muc nhin cho de
+cac file cha nen de ten file dac biet mot chut cac file con dat cung ten hohoho
 
 my-frontend-app/
 ├── public/                 # Static public assets (favicons, robots.txt)
@@ -62,3 +68,24 @@ my-frontend-app/
 └── tsconfig.json           # Compiler rules for TypeScript projects
 
 Redux thunk
+
+the way to storage role data to database and how to get role from database
+database should storange small data like short name of role (Example: ADMIN storange only AD)
+when user get role from database:
+database: in database storange AD
+back-end: back end will format AD to ADMIN then return ADMIN to front-end
+front-end: front-end take data from back-end then show to client if need can change ADMIN to Admin for user
+
+allway choose null better empty string or something like empty object, empty array
+
+Almost everyone go to fast and lost old tech even old tech not upgrade to max when everyone mix old tech and new tech - i call optimize -> will have very good people come to you
+
+data temp/data sample: backend will have some null attribute -> data null not need send to frontend -> frontend need data sample if not have default null or empty
+
+/////////////////////////COMMON ERROR ///////////////////////////////////////
+ERROR_1: if input tag use value have undefined params will have error warning uncontrolled 
+            because: in react "value" depend on "onChange" it allway empty string when have params undefined it will not empty string
+
+ERROR_2: Uncaught Error: Too many re-renders. React limits the number of renders to prevent an infinite loop.
+            because: may be in HTML tag attribute "onClick" or "onChange" you not put function to onClick or "onChange" (onClick={() => turnOn()} or onChange={() => turnOn()})
+            error: onClick={turnOn()} or onChange={turnOn()} 

@@ -2,15 +2,25 @@
 
 
 const ManagerProductDetails = ({panelClass}) => {
+
     return (
         <section id="panel-product-details" className={panelClass('panel-product-details')}>
             <div className="page-intro"><h1>Quản lý Product Detail</h1><p className="use-case-list">Add · Get all · Update · Delete</p></div>
+
             <div className="panel-toolbar"><button type="button" className="btn btn-primary">+ Add product detail</button></div>
             <div className="data-table-wrap">
                 <table className="data-table">
                     <thead><tr><th>ID</th><th>Product</th><th>Spec / Variant</th><th>Stock</th><th>Actions</th></tr></thead>
                     <tbody>
-                        <tr><td>1001</td><td>MacBook Pro 16"</td><td>36GB / 1TB — Space Black</td><td>24</td><td><button className="btn btn-sm btn-secondary">Edit</button> <button className="btn btn-sm btn-danger">Delete</button></td></tr>
+                        <tr>
+                            <td>1001</td><td>MacBook Pro 16"</td>
+                            <td>36GB / 1TB — Space Black</td>
+                            <td>24</td>
+                            <td>
+                                <button className="btn btn-sm btn-secondary">Edit</button> 
+                                <button className="btn btn-sm btn-danger">Delete</button>
+                                </td>
+                                </tr>
                         <tr><td>1002</td><td>MacBook Pro 16"</td><td>48GB / 2TB — Silver</td><td>8</td><td><button className="btn btn-sm btn-secondary">Edit</button> <button className="btn btn-sm btn-danger">Delete</button></td></tr>
                         <tr><td>1003</td><td>Galaxy S26 Ultra</td><td>256GB — Titanium</td><td>56</td><td><button className="btn btn-sm btn-secondary">Edit</button> <button className="btn btn-sm btn-danger">Delete</button></td></tr>
                     </tbody>

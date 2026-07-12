@@ -16,8 +16,8 @@ const HomePage = () => {
     //tra ve cac san pham co category la smartphone
   const phones = PRODUCTS.filter((product) => product.category === 'Smartphones')
 
-  const getAllProduct = useCallback(() => {
-    axios.get('http://localhost:8080/product')
+  const getAllProduct = useCallback(async () => {
+    await axios.get('http://localhost:8080/product')
     .then((response) =>{
       console.log(response.data)
 
@@ -26,7 +26,7 @@ const HomePage = () => {
       console.log(error)
     })
 
-    // const getAll = async axios.get("http://localhost:8080/:id")
+    // const getAll = axios.get("http://localhost:8080/:id") // not need await
   })
 
   const renderProductCard = (product) => (

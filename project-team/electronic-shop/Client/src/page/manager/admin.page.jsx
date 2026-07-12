@@ -5,11 +5,11 @@ import './../../css/design-system.css'
 import './../../css/pages.css'
 import  StaffNav  from '../../layout/manager/staff-nav'
 
-import ManagerUser from './../../component/manager/user/manager/user'
-import ManagerProduct from './../../component/manager/product/manager-product'
-import ManagerProductDetails from './../../component/manager/product_details/manager-product-details'
-import ManagerBrand from './../../component/manager/brand/manager-brand'
-import ManagerCategory from './../../component/manager/category/manager-category'
+import ManagerUser from './../../component/manager/user/manager-user.component'
+import ManagerProduct from './../../component/manager/product/manager-product.component'
+import ManagerProductDetails from './../../component/manager/product_details/manager-product-details.component'
+import ManagerBrand from '../../component/manager/brand/manager-brand.component'
+import ManagerCategory from '../../component/manager/category/manager-category.component'
 const panels = [
   ['panel-dashboard', 'Tổng quan'],
   ['panel-users', 'Users'],
