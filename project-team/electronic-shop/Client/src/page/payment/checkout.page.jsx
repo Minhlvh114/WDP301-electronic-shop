@@ -2,29 +2,31 @@ import { Link } from 'react-router-dom'
 import './../../css/components.css'
 import './../../css/design-system.css'
 import axios from "axios";
-
+import Cart from '../../js/cart';
 const data = {
-    buyerName: "lvhm",
-    buyerEmail: "email@gmail.com",
-    buyerPhone: "phone",
-    buyer: "phone",
-    price: 10000,
-    userId: "6a1f0b55107a2e35a6754c2a"
+  buyerName: "lvhm",
+  buyerEmail: "email@gmail.com",
+  buyerPhone: "phone",
+  buyer: "phone",
+  price: 10000,
+  userId: "6a1f0b55107a2e35a6754c2a"
 }
+
+const formatPrice = (price) => '$' + price.toLocaleString()
+
 
 const CheckoutPage = () => {
 
   const handlePlaceOrder = (e) => {
     if (e && e.preventDefault) e.preventDefault();
-``
-      axios
+    axios
       .post("http://localhost:8080/payment/create-payment-link", data)
       // .get("http://localhost:8080/product/")
       .then((response) => {
-          console.log(response)
-          console.log(response.data);
-          
-            window.location.href = response.data.link;
+        console.log(response)
+        console.log(response.data);
+
+        window.location.href = response.data.link;
       })
       .catch((error) => {
         console.error("Error fetching Courts:", error);
@@ -33,6 +35,9 @@ const CheckoutPage = () => {
     console.log('Place order clicked');
     // alert('Order placed (demo).');
   }
+
+  console.log(Cart.getTotal());
+  
 
 
   return (
@@ -71,9 +76,9 @@ const CheckoutPage = () => {
           </div>
           <aside className="order-summary">
             <h3>Order summary</h3>
-            <div className="summary-row"><span>Subtotal</span><span>$3,698</span></div>
+            <div className="summary-row"><span>Subtotal</span><span>{formatPrice(Cart.getTotal())}</span></div>
             <div className="summary-row"><span>Shipping</span><span>Free</span></div>
-            <div className="summary-row total"><span>Total</span><span>$3,698</span></div>
+            <div className="summary-row total"><span>Total</span><span>{formatPrice(Cart.getTotal())}</span></div>
             <button type="button" onClick={handlePlaceOrder} className="btn btn-primary btn-block" style={{ marginTop: '1.25rem' }}>Place order</button>
           </aside>
         </div>

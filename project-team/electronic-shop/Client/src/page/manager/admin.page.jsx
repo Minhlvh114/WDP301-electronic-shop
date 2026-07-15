@@ -7,16 +7,16 @@ import  StaffNav  from '../../layout/manager/staff-nav'
 
 import ManagerUser from './../../component/manager/user/manager-user.component'
 import ManagerProduct from './../../component/manager/product/manager-product.component'
-import ManagerProductDetails from './../../component/manager/product_details/manager-product-details.component'
 import ManagerBrand from '../../component/manager/brand/manager-brand.component'
 import ManagerCategory from '../../component/manager/category/manager-category.component'
+import ManagerProductVariant from '../../component/manager/product_variant/manager-product-variant.component'
 const panels = [
   ['panel-dashboard', 'Tổng quan'],
   ['panel-users', 'Users'],
   ['panel-categories', 'Categories'],
   ['panel-brands', 'Brands'],
   ['panel-products', 'Products'],
-  ['panel-product-details', 'Product Details'],
+  ['panel-product-variants', 'Product Variants'],
 ]
 
 const AdminPage = () => {
@@ -65,10 +65,12 @@ const AdminPage = () => {
         <ManagerProduct panelClass={panelClass}/>
 
         
-        <ManagerProductDetails panelClass={panelClass}/>
+        <ManagerProductVariant panelClass={panelClass}/>
+
       </main>
     </div>
   )
 }
 
+        
 export default AdminPage

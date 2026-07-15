@@ -5,7 +5,7 @@ const panels = [
   ['panel-categories', 'Categories'],
   ['panel-brands', 'Brands'],
   ['panel-products', 'Products'],
-  ['panel-product-details', 'Product Details'],
+  ['panel-product-variants', 'Product Variants'],
 ]
 
 

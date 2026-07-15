@@ -192,10 +192,20 @@
   line-height: 1;
 }
 
+.product-card__media .image {
+    position: absolute;
+    z-index: 0;
+    /* top: 50%; */
+    height: 95%;
+    width: 95%;
+}
+
 .product-card__badge {
   position: absolute;
-  top: var(--space-3);
-  left: var(--space-3);
+      z-index: 1;
+
+  top: var(--space-4);
+  left: var(--space-4);
 }
 
 .product-card__body {

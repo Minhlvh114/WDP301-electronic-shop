@@ -28,7 +28,7 @@ const ManagerBrand = ({ panelClass }) => {
 
   useEffect(() => {
     loadBrands()
-  }, [])
+  }, [selectedBrand])
 
   const openForm = (formMode, brand = null) => {
     setMode(formMode)

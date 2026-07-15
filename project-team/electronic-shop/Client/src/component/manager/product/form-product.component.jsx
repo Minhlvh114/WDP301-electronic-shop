@@ -12,6 +12,13 @@ function FormProduct({ show, onHide, mode, item, baseUrl, onSave }) {
   const [description, setDescription] = useState('')
   const [images, setImages] = useState('')
   const [price, setPrice] = useState('')
+  const [salePrice, setSalePrice] = useState('')
+  const [totalReserved, setTotalReserved] = useState('')
+  const [averageRating, setAverageRating] = useState('')
+  const [ratingCount, setRatingCount] = useState('')
+  const [isFeatured, setIsFeatured] = useState(false)
+  const [createdAt, setCreatedAt] = useState('')
+  const [updatedAt, setUpdatedAt] = useState('')
   const [brandId, setBrandId] = useState('')
   const [categoryId, setCategoryId] = useState('')
   const [status, setStatus] = useState('active')
@@ -25,6 +32,13 @@ function FormProduct({ show, onHide, mode, item, baseUrl, onSave }) {
       setDescription(item?.description || '')
       setImages((item?.images || []).join(', '))
       setPrice(item?.price != null ? item.price : '')
+      setSalePrice(item?.sale_price != null ? item.sale_price : '')
+      setTotalReserved(item?.total_reserved != null ? item.total_reserved : '')
+      setAverageRating(item?.average_rating != null ? item.average_rating : '')
+      setRatingCount(item?.rating_count != null ? item.rating_count : '')
+      setIsFeatured(Boolean(item?.is_featured))
+      setCreatedAt(item?.created_at || item?.createdAt || '')
+      setUpdatedAt(item?.updated_at || item?.updatedAt || '')
       setBrandId(item?.brand_id?._id || item?.brand_id || '')
       setCategoryId(item?.category_id?._id || item?.category_id || '')
       setStatus(item?.status || 'active')
@@ -34,6 +48,13 @@ function FormProduct({ show, onHide, mode, item, baseUrl, onSave }) {
       setDescription('')
       setImages('')
       setPrice('')
+      setSalePrice('')
+      setTotalReserved('')
+      setAverageRating('')
+      setRatingCount('')
+      setIsFeatured(false)
+      setCreatedAt('')
+      setUpdatedAt('')
       setBrandId('')
       setCategoryId('')
       setStatus('active')
@@ -50,6 +71,11 @@ function FormProduct({ show, onHide, mode, item, baseUrl, onSave }) {
       description,
       images: images.split(',').map((url) => url.trim()).filter(Boolean),
       price: Number(price),
+      sale_price: salePrice === '' ? null : Number(salePrice),
+      total_reserved: totalReserved === '' ? null : Number(totalReserved),
+      average_rating: averageRating === '' ? null : Number(averageRating),
+      rating_count: ratingCount === '' ? null : Number(ratingCount),
+      is_featured: Boolean(isFeatured),
       brand_id: brandId,
       category_id: categoryId,
       status,
@@ -72,7 +98,7 @@ function FormProduct({ show, onHide, mode, item, baseUrl, onSave }) {
   }
 
   return (
-    <Modal show={show} onHide={onHide} centered>
+    <Modal size="lg" show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title>{mode === 'Add' ? 'Add Product' : mode === 'Edit' ? 'Edit Product' : 'View Product'}</Modal.Title>
       </Modal.Header>
@@ -111,7 +137,7 @@ function FormProduct({ show, onHide, mode, item, baseUrl, onSave }) {
             />
           </Form.Group>
           <Row>
-            <Col xs={12} md={6}>
+            <Col xs={6} md={4}>
               <Form.Group className="mb-3" controlId="productForm.BrandId">
                 <Form.Label>Brand ID</Form.Label>
                 <Form.Control
@@ -123,7 +149,7 @@ function FormProduct({ show, onHide, mode, item, baseUrl, onSave }) {
                 />
               </Form.Group>
             </Col>
-            <Col xs={12} md={6}>
+            <Col xs={6} md={4}>
               <Form.Group className="mb-3" controlId="productForm.CategoryId">
                 <Form.Label>Category ID</Form.Label>
                 <Form.Control
@@ -135,9 +161,35 @@ function FormProduct({ show, onHide, mode, item, baseUrl, onSave }) {
                 />
               </Form.Group>
             </Col>
+
+            <Col xs={6} md={4}>
+              <Form.Group className="mb-3" controlId="productForm.Status">
+                <Form.Label>Status</Form.Label>
+                <Form.Select value={status} disabled={mode === 'View'} onChange={(e) => setStatus(e.target.value)}>
+                  <option value="active">active</option>
+                  <option value="inactive">inactive</option>
+                  <option value="draft">draft</option>
+                  <option value="out_of_stock">out_of_stock</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+
           </Row>
+
+
+          <Form.Group className="mb-3" controlId="productForm.Images">
+            <Form.Label>Images</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Comma-separated image URLs"
+              value={images}
+              disabled={mode === 'View'}
+              onChange={(e) => setImages(e.target.value)}
+            />
+          </Form.Group>
+
           <Row>
-            <Col xs={12} md={6}>
+            <Col xs={6} md={4}>
               <Form.Group className="mb-3" controlId="productForm.Price">
                 <Form.Label>Price</Form.Label>
                 <Form.Control
@@ -149,28 +201,85 @@ function FormProduct({ show, onHide, mode, item, baseUrl, onSave }) {
                 />
               </Form.Group>
             </Col>
-            <Col xs={12} md={6}>
-              <Form.Group className="mb-3" controlId="productForm.Status">
-                <Form.Label>Status</Form.Label>
-                <Form.Select value={status} disabled={mode === 'View'} onChange={(e) => setStatus(e.target.value)}>
-                  <option value="active">active</option>
-                  <option value="inactive">inactive</option>
-                  <option value="draft">draft</option>
-                  <option value="out_of_stock">out_of_stock</option>
-                </Form.Select>
+            <Col xs={6} md={4}>
+              <Form.Group className="mb-3" controlId="productForm.SalePrice">
+                <Form.Label>Sale Price</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter sale price"
+                  value={salePrice}
+                  disabled={mode === 'View'}
+                  onChange={(e) => setSalePrice(e.target.value)}
+                />
+              </Form.Group>
+            </Col>
+            <Col xs={6} md={4}>
+              <Form.Group className="mb-3" controlId="productForm.TotalReserved">
+                <Form.Label>Total Reserved</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter total reserved"
+                  value={totalReserved}
+                  disabled={mode === 'View'}
+                  onChange={(e) => setTotalReserved(e.target.value)}
+                />
               </Form.Group>
             </Col>
           </Row>
-          <Form.Group className="mb-3" controlId="productForm.Images">
-            <Form.Label>Images</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Comma-separated image URLs"
-              value={images}
+
+          <Row>
+            <Col xs={12} md={6}>
+              <Form.Group className="mb-3" controlId="productForm.AverageRating">
+                <Form.Label>Average Rating</Form.Label>
+                <Form.Control
+                  type="number"
+                  step="0.1"
+                  placeholder="Enter average rating"
+                  value={averageRating}
+                  disabled={mode === 'View'}
+                  onChange={(e) => setAverageRating(e.target.value)}
+                />
+              </Form.Group>
+            </Col>
+            <Col xs={12} md={6}>
+              <Form.Group className="mb-3" controlId="productForm.RatingCount">
+                <Form.Label>Rating Count</Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Enter rating count"
+                  value={ratingCount}
+                  disabled={mode === 'View'}
+                  onChange={(e) => setRatingCount(e.target.value)}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Form.Group className="mb-3" controlId="productForm.IsFeatured">
+            <Form.Check
+              type="checkbox"
+              label="Is Featured"
+              checked={isFeatured}
               disabled={mode === 'View'}
-              onChange={(e) => setImages(e.target.value)}
+              onChange={(e) => setIsFeatured(e.target.checked)}
             />
           </Form.Group>
+
+          <Row>
+            <Col xs={12} md={6}>
+              <Form.Group className="mb-3" controlId="productForm.CreatedAt">
+                <Form.Label>Created At</Form.Label>
+                <Form.Control type="text" value={createdAt} disabled />
+              </Form.Group>
+            </Col>
+            <Col xs={12} md={6}>
+              <Form.Group className="mb-3" controlId="productForm.UpdatedAt">
+                <Form.Label>Updated At</Form.Label>
+                <Form.Control type="text" value={updatedAt} disabled />
+              </Form.Group>
+            </Col>
+          </Row>
+
         </Form>
       </Modal.Body>
       <Modal.Footer>

@@ -7,13 +7,13 @@ import ProductHeaderPageLayout from './../../component/product/product-header-pa
 import ProductFilter from '../../component/product/product-filter'
 import ProductCard from '../../component/product/product-card'
 
-
+import Cart from '../../js/cart'
 
 function formatPrice(n) {
   return '$' + Number(n ?? 0).toLocaleString();
 }
 
-const MAX_PRICE = 3000
+const MAX_PRICE = 60000000
 //khi render no se khoi tao hook truoc roi moi chay
 //note: init > create
 //eavẻy time use state it will create new field storage html tag of that param use hook(vd:[param,setParam] = useState())
@@ -29,16 +29,23 @@ const ProductPage = () => {
   const maxPriceParam = searchParams.get('maxPrice')
   const selectedMaxPrice = maxPriceParam === null ? MAX_PRICE : Number(maxPriceParam) || MAX_PRICE
 
+
   //sort product before render
   const filteredProducts = PRODUCTS.filter((product) => {
 
-    const matchesCategory = selectedCategory ? product.category === selectedCategory : true
+    const matchesCategory = selectedCategory ? product.category_id.name === selectedCategory ? true : (product.category_id.name === "Accessories" && selectedCategory === "Gadgets") : true
     const matchesPrice = product.price <= selectedMaxPrice
-
+    
+    console.log("matchesCategory ",matchesCategory );
+    console.log("selectedCategory ", selectedCategory);
+    console.log(" ", );
+    
     return matchesCategory && matchesPrice
   })
 
-  
+
+
+
 
 
   return (
@@ -48,12 +55,12 @@ const ProductPage = () => {
 
       {/* <!-- Header page: small header--> */}
 
-      <ProductHeaderPageLayout selectedCategory={selectedCategory}  setSearchParams={setSearchParams}/>
+      <ProductHeaderPageLayout selectedCategory={selectedCategory} setSearchParams={setSearchParams} />
 
       {/* <!-- body --> */}
       <main className="container listing-layout">
 
-      {/* <!-- product filter --> */}
+        {/* <!-- product filter --> */}
         <ProductFilter
           selectedCategory={selectedCategory}
           searchParams={searchParams}
@@ -73,8 +80,8 @@ const ProductPage = () => {
           <div className="products-grid" id="listing-grid">
             {/* {filteredProducts.map(renderProductCard)} */}
             {filteredProducts.map((product) => {
-                return <ProductCard product={product} formatPrice={formatPrice} key={product.id}/>
-              }
+              return <ProductCard product={product} formatPrice={formatPrice} key={product.id} />
+            }
             )}
           </div>
           <nav className="pagination"><span className="active">1</span><a href="#">2</a></nav>

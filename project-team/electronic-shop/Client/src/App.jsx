@@ -23,11 +23,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <AuthGuest>
-          <Routes>
-            <Route path ='/' element={<HomePage />}/></Route>
-          </Routes>
-        </AuthGuest> */}
+
         <Route path='/' element={<AuthGuest><HomePage /></AuthGuest>} />
         <Route path='/product' element={<AuthGuest><ProductPage /></AuthGuest>} />
         <Route path='/product-detail' element={<AuthGuest><ProductDetailPage /></AuthGuest>} />
@@ -37,7 +33,10 @@ function App() {
         <Route path='/register' element={<AuthGuest><RegisterPage /></AuthGuest>} />
         <Route path='/forgot-password' element={<AuthGuest><ForgotPasswordPage /></AuthGuest>} />
         <Route path='/profile' element={<AuthGuest><ProfilePage /></AuthGuest>} />
+
+
         <Route path='/admin' element={<AuthAdmin><AdminPage /></AuthAdmin>} />
+
       </Routes>
     </BrowserRouter>
   )

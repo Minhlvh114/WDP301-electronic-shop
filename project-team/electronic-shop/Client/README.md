@@ -82,6 +82,13 @@ Almost everyone go to fast and lost old tech even old tech not upgrade to max wh
 
 data temp/data sample: backend will have some null attribute -> data null not need send to frontend -> frontend need data sample if not have default null or empty
 
+
+khi toi edit mot ban ghi trong nhieu ban ghi
+thi data cu nam trong nhieu ban ghi khong thay doi - thay doi 1 data trong nhieu data
+khi toi update mot ban ghi thi react render lai ban ghi do trong nhieu ban ghi khong phai goi BE lan nua
+
+app -> (page = layout + component)
+
 /////////////////////////COMMON ERROR ///////////////////////////////////////
 ERROR_1: if input tag use value have undefined params will have error warning uncontrolled 
             because: in react "value" depend on "onChange" it allway empty string when have params undefined it will not empty string

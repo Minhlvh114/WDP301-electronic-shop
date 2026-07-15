@@ -4,9 +4,13 @@
 const user = {
     role: "GUEST"
 }
+
+const cart = []
+
+
 //children is program param. when put html tag into html tag parent . all tag in html parent is children 
 const AuthGuest = ({children}) => {
-    console.log(children)
+    // console.log(children)
     if(user.role === "GUEST"){
         return children
     }
