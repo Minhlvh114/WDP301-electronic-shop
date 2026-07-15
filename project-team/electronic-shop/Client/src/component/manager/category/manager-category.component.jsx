@@ -30,7 +30,7 @@ const ManagerCategory = ({ panelClass }) => {
 
   useEffect(() => {
     loadCategories()
-  }, [])
+  }, [selectedCategory])
 
   const openForm = (formMode, category = null) => {
     setMode(formMode)

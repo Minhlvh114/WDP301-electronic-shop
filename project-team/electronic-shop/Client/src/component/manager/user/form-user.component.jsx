@@ -97,7 +97,7 @@ function FormUser({ show, onHide, mode, user }) {
   }
 
   return (
-    <Modal show={show} onHide={onHide} backdrop="static" centered>
+    <Modal size="lg" show={show} onHide={onHide} backdrop="static" centered>
       <Modal.Header closeButton>
         <Modal.Title>{mode === 'Add' ? 'Add user' : mode === 'Edit' ? 'Edit user' : 'View user'}</Modal.Title>
       </Modal.Header>
@@ -134,8 +134,10 @@ function FormUser({ show, onHide, mode, user }) {
                   disabled={mode === "View" ? true : false}
                   onChange={(e) => setRole(e.target.value)}
                 >
-                  <option>USER</option>
-                  <option>ADMIN</option>
+                  <option>Customer</option>
+                  <option>Admin</option>
+                  <option>Staff</option>
+
                 </Form.Select>
               </Form.Group>
             </Col>

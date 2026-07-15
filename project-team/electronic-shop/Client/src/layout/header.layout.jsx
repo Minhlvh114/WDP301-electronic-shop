@@ -1,8 +1,31 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import Cart from '../js/cart'
 
-// import './../css/components.css'
+
+// const cartItem = [
+//   { id: 1, emoji: '💻', name: 'MacBook Pro 16"', details: 'Space Black · 1TB', price: 2499 },
+//   { id: 2, emoji: '📱', name: 'iPhone 17 Pro Max', details: '256GB', price: 1199 },
+//   { id: 3, emoji: '📱', name: 'iPhone 17 Pro Max2', details: '256GB', price: 1199 },
+// ]
 
 const HeaderLayout = () => {
+
+    const [cartLength, setCartLength] = useState()
+
+    const getCartLength = () => {
+        const length = Cart.showCart().length
+        console.log("length",length);
+        return length
+        
+    }
+
+    useEffect(() => {
+        const length =  getCartLength()
+        setCartLength(length)
+    }, [cartLength])
+
+
     return (
         <>
             {/* <!-- News --> */}
@@ -33,7 +56,7 @@ const HeaderLayout = () => {
                         <Link to="/login" className="btn btn-ghost btn-sm">Sign in</Link>
                         <Link to="/cart" className="icon-link" aria-label="Cart">
                             <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z" /><circle cx="9" cy="20" r="1" /><circle cx="18" cy="20" r="1" /></svg>
-                            <span className="cart-count">2</span>
+                            <span className="cart-count">{cartLength}</span>
                         </Link>
                     </div>
                 </div>
